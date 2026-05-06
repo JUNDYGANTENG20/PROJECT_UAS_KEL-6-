@@ -15,7 +15,7 @@ public class Perpustakaan {
         daftarBuku.add(new String[]{"004", "Atomic Habits",   "James Clear",        "4"});
 
 
-        // data awal User
+        // data awal anggota
         daftarAnggota.add(new String[]{"A001", "Siti Rahayu",  "08987654321"});
         daftarAnggota.add(new String[]{"A002", "Budi Santoso", "08123456789"});
         daftarAnggota.add(new String[]{"A003", "Andi Wijaya",  "08111222333"});
@@ -23,27 +23,67 @@ public class Perpustakaan {
 
         int pilihan;
         do {
-            tampilkanMenu();
+            tampilkanMenuLogin();
             pilihan = Integer.parseInt(input.nextLine());
             switch (pilihan) {
-                case 1  -> lihatBuku();
-                case 2  -> tambahBuku();
-                case 3  -> hapusBuku();
-                case 4  -> lihatAnggota();
-                case 5  -> tambahAnggota();
-                case 6  -> hapusAnggota();
-                case 7  -> pinjamBuku();
-                case 8  -> kembalikanBuku();
-                case 9  -> lihatPeminjaman();
-                case 10 -> menuSorting();       // ← MENU SORTING BARU
-                case 0  -> System.out.println("Terima kasih. Program selesai.");
+                case 1 -> {
+                    int menuAdmin;
+                    do {
+                        tampilkanMenuAdmin();
+                        menuAdmin = Integer.parseInt(input.nextLine());
+                        switch (menuAdmin) {
+                            case 1 -> lihatBuku();
+                            case 2 -> tambahBuku();
+                            case 3 -> hapusBuku();
+                            case 4 -> lihatAnggota();
+                            case 5 -> tambahAnggota();
+                            case 6 -> hapusAnggota();
+                            case 7 -> lihatPeminjaman();
+                            case 8 -> menuSorting();
+                            case 0 -> System.out.println("Keluar dari menu admin...");
+                            default -> System.out.println("Pilihan tidak valid!");
+                        }
+                    } while (menuAdmin != 0);
+                }
+                case 2 -> {
+                    int menuUser;
+                    do {
+                        tampilkanMenuUser();
+                        menuUser = Integer.parseInt(input.nextLine());
+                        switch (menuUser) {
+                            case 1 -> lihatBuku();
+                            case 2 -> pinjamBuku();
+                            case 3 -> kembalikanBuku();
+                            case 4 -> lihatPeminjaman();
+                            case 5 -> menuSorting();
+                            case 0 -> System.out.println("Keluar dari menu user...");
+                            default -> System.out.println("Pilihan tidak valid!");
+                        }
+                    } while (menuUser != 0);
+                }
+                case 0 -> System.out.println("Terima kasih telah menggunakan sistem perpustakaan!");
                 default -> System.out.println("Pilihan tidak valid!");
             }
+
+
         } while (pilihan != 0);
     }
 
+    //tampilkan menu login
+        static void tampilkanMenuLogin() {
+            System.out.println("\n====================================");
+            System.out.println("       SISTEM PERPUSTAKAAN");
+            System.out.println("====================================");
+            System.out.println(" 1. Login sebagai Admin");
+            System.out.println(" 2. Login sebagai User");
+            System.out.println(" 0. Keluar");
+            System.out.println("====================================");
+            System.out.print("Pilih opsi: ");
+        }
+
+
     // ===== MENU UTAMA =====
-    static void tampilkanMenu() {
+    static void tampilkanMenuAdmin() {
         System.out.println("\n====================================");
         System.out.println("       SISTEM PERPUSTAKAAN");
         System.out.println("====================================");
@@ -52,11 +92,23 @@ public class Perpustakaan {
         System.out.println(" 3.  Hapus Buku");
         System.out.println(" 4.  Lihat Daftar Anggota");
         System.out.println(" 5.  Tambah Anggota");
-        System.out.println(" 6.  Hapus Anggota");
-        System.out.println(" 7.  Pinjam Buku");
-        System.out.println(" 8.  Kembalikan Buku");
-        System.out.println(" 9.  Lihat Data Peminjaman");
-        System.out.println(" 10. Urutkan Data (Sorting)");
+        System.out.println(" 6.  Hapus Anggota");;
+        System.out.println(" 7.  Lihat Data Peminjaman");
+        System.out.println(" 8. Urutkan Data (Sorting)");
+        System.out.println(" 0.  Keluar");
+        System.out.println("====================================");
+        System.out.print("Pilih menu: ");
+    }
+
+     static void tampilkanMenuUser() {
+        System.out.println("\n====================================");
+        System.out.println("       SISTEM PERPUSTAKAAN");
+        System.out.println("====================================");
+        System.out.println(" 1.  Lihat Daftar Buku");
+        System.out.println(" 2.  Pinjam Buku");
+        System.out.println(" 3.  Kembalikan Buku");
+        System.out.println(" 4.  Lihat Data Peminjaman");
+        System.out.println(" 5.  Urutkan Data (Sorting)");
         System.out.println(" 0.  Keluar");
         System.out.println("====================================");
         System.out.print("Pilih menu: ");
