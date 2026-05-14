@@ -1,4 +1,6 @@
 import java.util.*;
+import java.io.*;
+// Sistem Perpustakaan Sederhana dengan fitur sorting dan searching
 
 public class Perpustakaan {
 
@@ -10,101 +12,9 @@ public class Perpustakaan {
 
     public static void main(String[] args) {
 
-        // Data awal buku (ISBN, Judul, Pengarang, Stok)
-        daftarBuku.add(new String[] { "001", "Laskar Pelangi", "Andrea Hirata", "10" });
-        daftarBuku.add(new String[] { "002", "Sang Pemimpi", "Andrea Hirata", "8" });
-        daftarBuku.add(new String[] { "003", "Edensor", "Andrea Hirata", "5" });
-        daftarBuku.add(new String[] { "004", "Maryamah Karpov", "Andrea Hirata", "7" });
-        daftarBuku.add(new String[] { "005", "Negeri 5 Menara", "Ahmad Fuadi", "6" });
-        daftarBuku.add(new String[] { "006", "Ayat-Ayat Cinta", "H. El Shirazy", "9" });
-        daftarBuku.add(new String[] { "007", "Perahu Kertas", "Dee Lestari", "4" });
-        daftarBuku.add(new String[] { "008", "Supernova", "Dee Lestari", "3" });
-        daftarBuku.add(new String[] { "009", "Filosofi Teras", "Henry Manampiring", "12" });
-        daftarBuku.add(new String[] { "010", "Bumi", "Tere Liye", "11" });
-        daftarBuku.add(new String[] { "011", "Bulan", "Tere Liye", "10" });
-        daftarBuku.add(new String[] { "012", "Matahari", "Tere Liye", "8" });
-        daftarBuku.add(new String[] { "013", "Hujan", "Tere Liye", "6" });
-        daftarBuku.add(new String[] { "014", "Rindu", "Tere Liye", "5" });
-        daftarBuku.add(new String[] { "015", "Pulang", "Tere Liye", "4" });
-        daftarBuku.add(new String[] { "016", "Dilan 1990", "Pidi Baiq", "3" });
-        daftarBuku.add(new String[] { "017", "Dilan 1991", "Pidi Baiq", "7" });
-        daftarBuku.add(new String[] { "018", "Milea", "Pidi Baiq", "6" });
-        daftarBuku.add(new String[] { "019", "Koala Kumal", "Raditya Dika", "5" });
-        daftarBuku.add(new String[] { "020", "Kambing Jantan", "Raditya Dika", "4" });
-        daftarBuku.add(new String[] { "021", "Cinta Brontosaurus", "Raditya Dika", "6" });
-        daftarBuku.add(new String[] { "022", "Manusia Setengah Salmon", "Raditya Dika", "7" });
-        daftarBuku.add(new String[] { "023", "Ketika Cinta Bertasbih", "H. El Shirazy", "9" });
-        daftarBuku.add(new String[] { "024", "Bumi Cinta", "H. El Shirazy", "8" });
-        daftarBuku.add(new String[] { "025", "Dalam Mihrab Cinta", "H. El Shirazy", "7" });
-        daftarBuku.add(new String[] { "026", "5 cm", "Donny Dhirgantoro", "5" });
-        daftarBuku.add(new String[] { "027", "Sunshine Becomes You", "Ilana Tan", "6" });
-        daftarBuku.add(new String[] { "028", "Autumn in Paris", "Ilana Tan", "10" });
-        daftarBuku.add(new String[] { "029", "Summer in Seoul", "Ilana Tan", "9" });
-        daftarBuku.add(new String[] { "030", "Winter in Tokyo", "Ilana Tan", "8" });
-        daftarBuku.add(new String[] { "031", "Ranah 3 Warna", "Ahmad Fuadi", "7" });
-        daftarBuku.add(new String[] { "032", "Rantau 1 Muara", "Ahmad Fuadi", "6" });
-        daftarBuku.add(new String[] { "033", "Gajah Mada", "Langit Kresna H", "5" });
-        daftarBuku.add(new String[] { "034", "Pramoedya Bumi Manusia", "Pramoedya A T", "4" });
-        daftarBuku.add(new String[] { "035", "Anak Semua Bangsa", "Pramoedya A T", "3" });
-        daftarBuku.add(new String[] { "036", "Jejak Langkah", "Pramoedya A T", "2" });
-        daftarBuku.add(new String[] { "037", "Rumah Kaca", "Pramoedya A T", "3" });
-        daftarBuku.add(new String[] { "039", "Di Bawah Lindungan Kabah", "Hamka", "5" });
-        daftarBuku.add(new String[] { "040", "Sitti Nurbaya", "Marah Rusli", "6" });
-        daftarBuku.add(new String[] { "041", "Atheis", "Achdiat K. Mihardja", "7" });
-        daftarBuku.add(new String[] { "042", "Ronggeng Dukuh Paruk", "Ahmad Tohari", "8" });
-        daftarBuku.add(new String[] { "043", "Cantik Itu Luka", "Eka Kurniawan", "9" });
-        daftarBuku.add(new String[] { "044", "Lelaki Harimau", "Eka Kurniawan", "6" });
-        daftarBuku.add(new String[] { "045", "O", "Eka Kurniawan", "5" });
-        daftarBuku.add(new String[] { "047", "Gadis Kretek", "Ratih Kumala", "3" });
-        daftarBuku.add(new String[] { "048", "Orang-Orang Biasa", "Andrea Hirata", "6" });
-        daftarBuku.add(new String[] { "049", "Sirkus Pohon", "Andrea Hirata", "7" });
-        daftarBuku.add(new String[] { "050", "Laskar Cinta", "H. El Shirazy", "8" });
-        daftarBuku.add(new String[] { "051", "Haji Backpacker", "Aguk Irawan MN", "9" });
-        daftarBuku.add(new String[] { "052", "Negeri di Ujung Tanduk", "Tere Liye", "10" });
-        daftarBuku.add(new String[] { "053", "Negeri Para Bedebah", "Tere Liye", "6" });
-        daftarBuku.add(new String[] { "054", "Sunset Bersama Rosie", "Tere Liye", "7" });
-        daftarBuku.add(new String[] { "055", "Hafalan Shalat Delisa", "Tere Liye", "5" });
-        daftarBuku.add(new String[] { "056", "Si Anak Cahaya", "Tere Liye", "8" });
-        daftarBuku.add(new String[] { "057", "Si Anak Badai", "Tere Liye", "6" });
-        daftarBuku.add(new String[] { "058", "Si Anak Pintar", "Tere Liye", "4" });
-        daftarBuku.add(new String[] { "059", "Bintang", "Tere Liye", "3" });
-        daftarBuku.add(new String[] { "060", "Komet", "Tere Liye", "5" });
-
-        // data awal anggota (ID, Nama, No. Telp) 60baris
-        ArrayList<String[]> daftarAnggota = new ArrayList<>();
-
-        daftarAnggota.add(new String[] { "A001", "Irfan Hakim", "085283557671" });
-        daftarAnggota.add(new String[] { "A002", "Rizky Ramadhan", "081234567890" });
-        daftarAnggota.add(new String[] { "A003", "Dinda Putri", "082345678901" });
-        daftarAnggota.add(new String[] { "A004", "Fajar Nugroho", "083456789012" });
-        daftarAnggota.add(new String[] { "A005", "Siti Aisyah", "084567890123" });
-        daftarAnggota.add(new String[] { "A006", "Agus Setiawan", "085678901234" });
-        daftarAnggota.add(new String[] { "A007", "Rina Marlina", "086789012345" });
-        daftarAnggota.add(new String[] { "A008", "Budi Santoso", "087890123456" });
-        daftarAnggota.add(new String[] { "A009", "Nadia Putri", "088901234567" });
-        daftarAnggota.add(new String[] { "A010", "Andi Saputra", "089012345678" });
-
-        daftarAnggota.add(new String[] { "A011", "Dewi Lestari", "081112223334" });
-        daftarAnggota.add(new String[] { "A012", "Yoga Pratama", "082223334445" });
-        daftarAnggota.add(new String[] { "A013", "Maya Sari", "083334445556" });
-        daftarAnggota.add(new String[] { "A014", "Rudi Hartono", "084445556667" });
-        daftarAnggota.add(new String[] { "A015", "Intan Permata", "085556667778" });
-        daftarAnggota.add(new String[] { "A016", "Hendra Wijaya", "086667778889" });
-        daftarAnggota.add(new String[] { "A017", "Putra Mahendra", "087778889990" });
-        daftarAnggota.add(new String[] { "A018", "Citra Dewi", "088889990001" });
-        daftarAnggota.add(new String[] { "A019", "Galih Prakoso", "089990001112" });
-        daftarAnggota.add(new String[] { "A020", "Tania Putri", "081000111222" });
-
-        daftarAnggota.add(new String[] { "A021", "Wahyu Hidayat", "082111222333" });
-        daftarAnggota.add(new String[] { "A022", "Nina Kurnia", "083222333444" });
-        daftarAnggota.add(new String[] { "A023", "Eko Prasetyo", "084333444555" });
-        daftarAnggota.add(new String[] { "A024", "Lina Handayani", "085444555666" });
-        daftarAnggota.add(new String[] { "A025", "Arif Rahman", "086555666777" });
-        daftarAnggota.add(new String[] { "A026", "Salsa Putri", "087666777888" });
-        daftarAnggota.add(new String[] { "A027", "Bayu Saputra", "088777888999" });
-        daftarAnggota.add(new String[] { "A028", "Rizka Amelia", "089888999000" });
-        daftarAnggota.add(new String[] { "A029", "Doni Kurniawan", "081999000111" });
-        daftarAnggota.add(new String[] { "A030", "Fitriani", "082000111222" });
+        bacaBukuCSV();
+        bacaAnggotaCSV();
+        bacaPinjamCSV();
 
         int pilihan;
         do {
@@ -119,12 +29,15 @@ public class Perpustakaan {
                         switch (menuAdmin) {
                             case 1 -> lihatBuku();
                             case 2 -> tambahBuku();
-                            case 3 -> hapusBuku();
-                            case 4 -> lihatAnggota();
-                            case 5 -> tambahAnggota();
-                            case 6 -> hapusAnggota();
-                            case 7 -> lihatPeminjaman();
-                            case 8 -> menuSorting();
+                            case 3 -> editBuku();
+                            case 4 -> hapusBuku();
+                            case 5 -> lihatAnggota();
+                            case 6 -> tambahAnggota();
+                            case 7 -> editAnggota();
+                            case 8 -> hapusAnggota();
+                            case 9 -> lihatPeminjaman();
+                            case 10 -> menuSorting();
+                            case 11 -> menuSearching();
                             case 0 -> System.out.println("Keluar dari menu admin...");
                             default -> System.out.println("Pilihan tidak valid!");
                         }
@@ -141,6 +54,7 @@ public class Perpustakaan {
                             case 3 -> kembalikanBuku();
                             case 4 -> lihatPeminjaman();
                             case 5 -> menuSorting();
+                            case 6 -> menuSearching();
                             case 0 -> System.out.println("Keluar dari menu user...");
                             default -> System.out.println("Pilihan tidak valid!");
                         }
@@ -152,6 +66,7 @@ public class Perpustakaan {
 
         } while (pilihan != 0);
     }
+                                   //============================================\\
 
     // ==== MENU LOGIN =====
     static void tampilkanMenuLogin() {
@@ -172,12 +87,15 @@ public class Perpustakaan {
         System.out.println("====================================");
         System.out.println(" 1.  Lihat Daftar Buku");
         System.out.println(" 2.  Tambah Buku");
-        System.out.println(" 3.  Hapus Buku");
-        System.out.println(" 4.  Lihat Daftar Anggota");
-        System.out.println(" 5.  Tambah Anggota");
-        System.out.println(" 6.  Hapus Anggota");
-        System.out.println(" 7.  Lihat Data Peminjaman");
-        System.out.println(" 8. Urutkan Data (Sorting)");
+        System.out.println(" 3.  Edit Buku");
+        System.out.println(" 4.  Hapus Buku");
+        System.out.println(" 5.  Lihat Daftar Anggota");
+        System.out.println(" 6.  Tambah Anggota");
+        System.out.println(" 7.  Edit Anggota");
+        System.out.println(" 8.  Hapus Anggota");
+        System.out.println(" 9.  Lihat Data Peminjaman");
+        System.out.println(" 10. Urutkan Data (Sorting)");
+        System.out.println(" 11. Cari Buku (searching)");
         System.out.println(" 0.  Keluar");
         System.out.println("====================================");
         System.out.print("Pilih menu: ");
@@ -193,6 +111,7 @@ public class Perpustakaan {
         System.out.println(" 3.  Kembalikan Buku");
         System.out.println(" 4.  Lihat Data Peminjaman");
         System.out.println(" 5.  Urutkan Data (Sorting)");
+        System.out.println(" 6.  Cari Buku (searching)");
         System.out.println(" 0.  Keluar");
         System.out.println("====================================");
         System.out.print("Pilih menu: ");
@@ -244,6 +163,27 @@ public class Perpustakaan {
         }
     }
 
+    // ====== MENU SEARCHING ======
+    static void menuSearching() {
+        System.out.println("\n--- MENU CARI BUKU ---");
+        System.out.println(" 1. Cari berdasarkan Judul");
+        System.out.println(" 2. Cari berdasarkan ISBN");
+        System.out.println(" 3. Cari berdasarkan Kategori");
+        System.out.println(" 4. Cari berdasarkan Pengarang");
+        System.out.print("Pilih opsi: ");
+        int pilihan = Integer.parseInt(input.nextLine());
+
+        switch (pilihan) {
+            case 1 -> cariBuku();
+            case 2 -> cariBukuByISBN();
+            case 3 -> cariBukuByKategori();
+            case 4 -> cariBukuByPengarang();
+            default -> System.out.println("Pilihan tidak valid!");
+        }
+    }
+
+                                    //===========================================\\
+                                    
     // =============================================
     // BUBBLE SORT - BUKU berdasarkan kolom
     // kolom 0 = ISBN, kolom 1 = Judul, kolom 2 = Pengarang
@@ -328,6 +268,10 @@ public class Perpustakaan {
         System.out.println("[✓] Peminjaman berhasil diurutkan!");
     }
 
+    // ============================================
+    // FUNGSI-FUNGSI LAINNYA
+    // ============================================
+
     // ===== BUKU =====
     static void lihatBuku() {
 
@@ -338,17 +282,15 @@ public class Perpustakaan {
             return;
         }
 
-        System.out.printf("%-6s %-25s %-20s %s%n", "ISBN", "Judul", "Pengarang", "Stok");
+        System.out.printf("%-6s %-25s %-20s %-20s %s%n", "ISBN", "Judul", "Kategori", "Pengarang", "Stok");
 
-        // repeat() hanya tersedia di Java 11 ke atas, jika menggunakan versi lebih lama
-        // bisa pakai loop untuk cetak garis
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 60; i++) {
             sb.append("-");
         }
         System.out.println(sb.toString());
         for (String[] b : daftarBuku) {
-            System.out.printf("%-6s %-25s %-20s %s%n", b[0], b[1], b[2], b[3]);
+            System.out.printf("%-6s %-25s %-20s %-20s %s%n", b[0], b[1], b[2], b[3], b[4]);
         }
     }
 
@@ -361,6 +303,8 @@ public class Perpustakaan {
         String isbn = input.nextLine();
         System.out.print("Judul    : ");
         String judul = input.nextLine();
+        System.out.print("Kategori : ");
+        String kategori = input.nextLine();
         System.out.print("Pengarang: ");
         String pengarang = input.nextLine();
         System.out.print("Stok     : ");
@@ -372,8 +316,32 @@ public class Perpustakaan {
                 return;
             }
         }
-        daftarBuku.add(new String[] { isbn, judul, pengarang, stok });
+        daftarBuku.add(new String[] { isbn, judul, kategori, pengarang, stok });
         System.out.println("Buku berhasil ditambahkan!");
+
+        simpanBukuCSV();
+    }
+
+    static void editBuku() {
+        System.out.println("\n--- EDIT BUKU ---");
+        System.out.print("Masukkan ISBN buku yang ingin diedit: ");
+        String isbn = input.nextLine();
+        for (String[] b : daftarBuku) {
+            if (b[0].equals(isbn)) {
+                System.out.print("Judul baru    : ");
+                b[1] = input.nextLine();
+                System.out.print("Kategori baru : ");
+                b[2] = input.nextLine();
+                System.out.print("Pengarang baru: ");
+                b[3] = input.nextLine();
+                System.out.print("Stok baru     : ");
+                b[4] = input.nextLine();
+                System.out.println("Buku berhasil diedit!");
+                simpanBukuCSV();
+                return;
+            }
+        }
+        System.out.println("ISBN tidak ditemukan!");
     }
 
     static void hapusBuku() {
@@ -388,6 +356,91 @@ public class Perpustakaan {
         }
         boolean dihapus = daftarBuku.removeIf(b -> b[0].equals(isbn));
         System.out.println(dihapus ? "Buku berhasil dihapus!" : "ISBN tidak ditemukan!");
+
+        simpanBukuCSV();
+    }
+
+    // ====== SEARCHING =====
+
+    static void cariBuku() {
+        System.out.print("Masukkan judul buku: ");
+        String keyword = input.nextLine().toLowerCase();
+
+        boolean ketemu = false;
+
+        for (String[] b : daftarBuku) {
+            if (b[1].toLowerCase().contains(keyword)) {
+                System.out.printf("%-6s %-25s %-20s %-20s %s%n",
+                        b[0], b[1], b[2], b[3], b[4]);
+                ketemu = true;
+            }
+        }
+
+        if (!ketemu) {
+            System.out.println("Buku tidak ditemukan.");
+        }
+    }
+
+    // searching untuk isbn lebih tepatnya karena isbn itu unik, jadi pakai equals
+    // saja
+    static void cariBukuByISBN() {
+        System.out.print("Masukkan ISBN buku: ");
+        String isbn = input.nextLine().toLowerCase();
+
+        boolean ketemu = false;
+
+        for (String[] b : daftarBuku) {
+            if (b[0].toLowerCase().equals(isbn)) {
+                System.out.printf("%-6s %-25s %-20s %-20s %s%n",
+                        b[0], b[1], b[2], b[3], b[4]);
+                ketemu = true;
+            }
+        }
+
+        if (!ketemu) {
+            System.out.println("Buku tidak ditemukan.");
+        }
+    }
+
+    // seraching untuk bedasarkan kategori atau pengarang bisa ditambahkan dengan
+    // cara yang sama seperti cariBuku() hanya saja kolomnya berbeda (kolom 2 untuk
+    // kategori, kolom 3 untuk pengarang)
+    static void cariBukuByKategori() {
+        System.out.print("Masukkan kategori buku: ");
+        String keyword = input.nextLine().toLowerCase();
+
+        boolean ketemu = false;
+
+        for (String[] b : daftarBuku) {
+            if (b[2].toLowerCase().contains(keyword)) {
+                System.out.printf("%-6s %-25s %-20s %-20s %s%n",
+                        b[0], b[1], b[2], b[3], b[4]);
+                ketemu = true;
+            }
+        }
+
+        if (!ketemu) {
+            System.out.println("Buku tidak ditemukan.");
+        }
+    }
+
+    static void cariBukuByPengarang() {
+        System.out.print("Masukkan nama pengarang: ");
+        String keyword = input.nextLine().toLowerCase();
+
+        boolean ketemu = false;
+
+        for (String[] b : daftarBuku) {
+            if (b[3].toLowerCase().contains(keyword)) {
+                System.out.printf("%-6s %-25s %-20s %-20s %s%n",
+                        b[0], b[1], b[2], b[3], b[4]);
+                ketemu = true;
+            }
+        }
+
+        if (!ketemu) {
+            System.out.println("Buku tidak ditemukan.");
+        }
     }
 
     // ===== ANGGOTA =====
@@ -413,6 +466,26 @@ public class Perpustakaan {
         String id = "A" + String.format("%03d", daftarAnggota.size() + 1);
         daftarAnggota.add(new String[] { id, nama, noTelp });
         System.out.println("Anggota berhasil didaftarkan! ID: " + id);
+
+        simpanAnggotaCSV();
+    }
+
+    static void editAnggota() {
+        System.out.println("\n--- EDIT ANGGOTA ---");
+        System.out.print("Masukkan ID anggota yang ingin diedit: ");
+        String id = input.nextLine();
+        for (String[] a : daftarAnggota) {
+            if (a[0].equals(id)) {
+                System.out.print("Nama baru    : ");
+                a[1] = input.nextLine();
+                System.out.print("No Telp baru : ");
+                a[2] = input.nextLine();
+                System.out.println("Anggota berhasil diedit!");
+                simpanAnggotaCSV();
+                return;
+            }
+        }
+        System.out.println("ID tidak ditemukan!");
     }
 
     static void hapusAnggota() {
@@ -427,6 +500,8 @@ public class Perpustakaan {
         }
         boolean dihapus = daftarAnggota.removeIf(a -> a[0].equals(id));
         System.out.println(dihapus ? "Anggota berhasil dihapus!" : "ID tidak ditemukan!");
+
+        simpanAnggotaCSV();
     }
 
     // ===== PEMINJAMAN =====
@@ -466,6 +541,8 @@ public class Perpustakaan {
 
         System.out.println("Peminjaman berhasil! ID Pinjam: " + idPinjam);
         System.out.println("Tanggal Pinjam: " + tgl);
+        simpanBukuCSV(); // Simpan perubahan stok
+        simpanPinjamCSV(); // Simpan data peminjaman baru
     }
 
     static void kembalikanBuku() {
@@ -488,6 +565,7 @@ public class Perpustakaan {
                 }
                 System.out.println("Buku berhasil dikembalikan!");
                 System.out.println("Tanggal Kembali: " + java.time.LocalDate.now());
+                simpanPinjamCSV(); // Simpan perubahan status peminjaman
                 return;
             }
         }
@@ -495,6 +573,7 @@ public class Perpustakaan {
     }
 
     static void lihatPeminjaman() {
+
         System.out.println("\n--- DATA PEMINJAMAN ---");
         if (daftarPinjam.isEmpty()) {
             System.out.println("Belum ada data peminjaman.");
@@ -506,4 +585,112 @@ public class Perpustakaan {
             System.out.printf("%-8s %-10s %-8s %-14s %s%n", p[0], p[1], p[2], p[3], p[4]);
         }
     }
+
+    // ====== SIMPAN DATA KE CSV ======
+    static void simpanBukuCSV() {
+        try {
+            FileWriter writer = new FileWriter("databuku.csv");
+
+            for (String[] buku : daftarBuku) {
+                writer.write(String.join(",", buku));
+                writer.write("\n");
+            }
+
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Gagal menyimpan buku.");
+        }
+    }
+
+    static void simpanAnggotaCSV() {
+        try {
+            FileWriter writer = new FileWriter("dataanggota.csv");
+
+            for (String[] anggota : daftarAnggota) {
+                writer.write(String.join(",", anggota));
+                writer.write("\n");
+            }
+
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Gagal menyimpan anggota.");
+        }
+    }
+
+    static void simpanPinjamCSV() {
+        try {
+            FileWriter writer = new FileWriter("datapinjam.csv");
+
+            for (String[] pinjam : daftarPinjam) {
+                writer.write(String.join(",", pinjam));
+                writer.write("\n");
+            }
+
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Gagal menyimpan peminjaman.");
+        }
+    }
+
+    // ====== BACA DATA DARI CSV ======
+    static void bacaBukuCSV() {
+        try {
+            File file = new File("databuku.csv");
+            if (!file.exists()) {
+                return; // Jika file tidak ada, langsung keluar
+            }
+            Scanner reader = new Scanner(file);
+            while (reader.hasNextLine()) {
+                String line = reader.nextLine();
+                String[] data = line.split(",");
+                if (data.length == 5) {
+                    daftarBuku.add(data);
+                }
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File buku tidak ditemukan.");
+        }
+    }
+
+    static void bacaAnggotaCSV() {
+        try {
+            File file = new File("dataanggota.csv");
+            if (!file.exists()) {
+                return; // Jika file tidak ada, langsung keluar
+            }
+            Scanner reader = new Scanner(file);
+            while (reader.hasNextLine()) {
+                String line = reader.nextLine();
+                String[] data = line.split(",");
+                if (data.length == 4) {
+                    daftarAnggota.add(data);
+                }
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File anggota tidak ditemukan.");
+        }
+    }
+
+    static void bacaPinjamCSV() {
+        try {
+            File file = new File("datapinjam.csv");
+            if (!file.exists()) {
+                return; // Jika file tidak ada, langsung keluar
+            }
+            Scanner reader = new Scanner(file);
+            while (reader.hasNextLine()) {
+                String line = reader.nextLine();
+                String[] data = line.split(",");
+                if (data.length == 5) {
+                    daftarPinjam.add(data);
+                }
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File peminjaman tidak ditemukan.");
+        }
+    }
+
 }
