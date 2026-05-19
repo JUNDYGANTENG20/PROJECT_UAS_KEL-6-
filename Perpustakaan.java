@@ -1,6 +1,7 @@
 import java.util.*;
 import java.io.*;
-// Sistem Perpustakaan Sederhana dengan fitur sorting dan searching
+
+// Sistem Perpustakaan Sederhana dengan fitur CRUD, sorting dan searching
 
 public class Perpustakaan {
 
@@ -66,7 +67,6 @@ public class Perpustakaan {
 
         } while (pilihan != 0);
     }
-                                   //============================================\\
 
     // ==== MENU LOGIN =====
     static void tampilkanMenuLogin() {
@@ -182,8 +182,8 @@ public class Perpustakaan {
         }
     }
 
-                                    //===========================================\\
-                                    
+    // ===========================================\\
+
     // =============================================
     // BUBBLE SORT - BUKU berdasarkan kolom
     // kolom 0 = ISBN, kolom 1 = Judul, kolom 2 = Pengarang
@@ -213,8 +213,8 @@ public class Perpustakaan {
         int n = daftarBuku.size();
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {
-                int stokA = Integer.parseInt(daftarBuku.get(j)[3]);
-                int stokB = Integer.parseInt(daftarBuku.get(j + 1)[3]);
+                int stokA = Integer.parseInt(daftarBuku.get(j)[4]);
+                int stokB = Integer.parseInt(daftarBuku.get(j + 1)[4]);
                 if (stokA < stokB) {
                     // Tukar posisi (descending)
                     String[] temp = daftarBuku.get(j);
@@ -309,6 +309,13 @@ public class Perpustakaan {
         String pengarang = input.nextLine();
         System.out.print("Stok     : ");
         String stok = input.nextLine();
+
+        try {
+            Integer.parseInt(stok);
+        } catch (NumberFormatException e) {
+            System.out.println("Stok harus berupa angka!");
+            return;
+        }
 
         for (String[] b : daftarBuku) {
             if (b[0].equals(isbn)) {
@@ -481,6 +488,7 @@ public class Perpustakaan {
                 System.out.print("No Telp baru : ");
                 a[2] = input.nextLine();
                 System.out.println("Anggota berhasil diedit!");
+                System.out.println("ID: " + a[0] + ", Nama: " + a[1] + ", No Telp: " + a[2]);
                 simpanAnggotaCSV();
                 return;
             }
@@ -529,7 +537,7 @@ public class Perpustakaan {
             System.out.println("Buku tidak ditemukan!");
             return;
         }
-        if (Integer.parseInt(buku[3]) <= 0) {
+        if (Integer.parseInt(buku[4]) <= 0) {
             System.out.println("Stok buku habis!");
             return;
         }
@@ -537,10 +545,13 @@ public class Perpustakaan {
         String idPinjam = "P" + String.format("%03d", daftarPinjam.size() + 1);
         String tgl = java.time.LocalDate.now().toString();
         daftarPinjam.add(new String[] { idPinjam, idAnggota, isbn, tgl, "Dipinjam" });
-        buku[3] = String.valueOf(Integer.parseInt(buku[3]) - 1);
+        buku[4] = String.valueOf(Integer.parseInt(buku[4]) - 1);
 
         System.out.println("Peminjaman berhasil! ID Pinjam: " + idPinjam);
         System.out.println("Tanggal Pinjam: " + tgl);
+        System.out.println("ID Anggota: " + idAnggota);
+        System.out.println("ISBN Buku: " + isbn);
+
         simpanBukuCSV(); // Simpan perubahan stok
         simpanPinjamCSV(); // Simpan data peminjaman baru
     }
@@ -559,12 +570,15 @@ public class Perpustakaan {
                 p[4] = "Dikembalikan";
                 for (String[] b : daftarBuku) {
                     if (b[0].equals(p[2])) {
-                        b[3] = String.valueOf(Integer.parseInt(b[3]) + 1);
+                        b[4] = String.valueOf(Integer.parseInt(b[4]) + 1);
                         break;
                     }
                 }
                 System.out.println("Buku berhasil dikembalikan!");
                 System.out.println("Tanggal Kembali: " + java.time.LocalDate.now());
+                System.out.println("ID Peminjaman: " + idPinjam);
+                System.out.println("ID Anggota: " + p[1]);
+                System.out.println("ISBN Buku: " + p[2]);
                 simpanPinjamCSV(); // Simpan perubahan status peminjaman
                 return;
             }
@@ -663,7 +677,7 @@ public class Perpustakaan {
             while (reader.hasNextLine()) {
                 String line = reader.nextLine();
                 String[] data = line.split(",");
-                if (data.length == 4) {
+                if (data.length == 3) {
                     daftarAnggota.add(data);
                 }
             }
@@ -677,7 +691,7 @@ public class Perpustakaan {
         try {
             File file = new File("datapinjam.csv");
             if (!file.exists()) {
-                return; // Jika file tidak ada, langsung keluar
+                return; // Jika file tidak ada, langsung keluar, itulah gunanya return.
             }
             Scanner reader = new Scanner(file);
             while (reader.hasNextLine()) {
