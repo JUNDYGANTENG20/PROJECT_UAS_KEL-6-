@@ -361,10 +361,16 @@ public class Perpustakaan {
                 return;
             }
         }
-        boolean dihapus = daftarBuku.removeIf(b -> b[0].equals(isbn));
-        System.out.println(dihapus ? "Buku berhasil dihapus!" : "ISBN tidak ditemukan!");
+        for (String[] b : daftarBuku) {
+            if (b[0].equals(isbn)) {
+                daftarBuku.remove(b);
+                System.out.println("Buku berhasil dihapus!");
+                simpanBukuCSV();
+                return;
+            }
+        }
+        System.out.println("ISBN tidak ditemukan!");
 
-        simpanBukuCSV();
     }
 
     // ====== SEARCHING =====
@@ -458,7 +464,11 @@ public class Perpustakaan {
             return;
         }
         System.out.printf("%-8s %-20s %s%n", "ID", "Nama", "No. Telp");
-        System.out.println("-".repeat(45));
+        System.out.println("-".repeat(45)); 
+        // harusnya pake 
+        // for (int i = 0; i < 45; i++) {
+        // siout("-");
+        // } tapi biar cepet aja pakai repeat
         for (String[] a : daftarAnggota) {
             System.out.printf("%-8s %-20s %s%n", a[0], a[1], a[2]);
         }
