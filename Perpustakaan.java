@@ -19,14 +19,15 @@ public class Perpustakaan {
 
         int pilihan;
         do {
+            Dashboard();
             tampilkanMenuLogin();
-            pilihan = Integer.parseInt(input.nextLine());
+            pilihan = inputAngka();
             switch (pilihan) {
                 case 1 -> {
                     int menuAdmin;
                     do {
                         tampilkanMenuAdmin();
-                        menuAdmin = Integer.parseInt(input.nextLine());
+                        menuAdmin = inputAngka();
                         switch (menuAdmin) {
                             case 1 -> lihatBuku();
                             case 2 -> tambahBuku();
@@ -39,6 +40,7 @@ public class Perpustakaan {
                             case 9 -> lihatPeminjaman();
                             case 10 -> menuSorting();
                             case 11 -> menuSearching();
+                            case 12 -> riwayatAnggota();
                             case 0 -> System.out.println("Keluar dari menu admin...");
                             default -> System.out.println("Pilihan tidak valid!");
                         }
@@ -48,14 +50,13 @@ public class Perpustakaan {
                     int menuUser;
                     do {
                         tampilkanMenuUser();
-                        menuUser = Integer.parseInt(input.nextLine());
+                        menuUser = inputAngka();
                         switch (menuUser) {
                             case 1 -> lihatBuku();
                             case 2 -> pinjamBuku();
                             case 3 -> kembalikanBuku();
                             case 4 -> lihatPeminjaman();
-                            case 5 -> menuSorting();
-                            case 6 -> menuSearching();
+                            case 5 -> filterCariBukuUser();
                             case 0 -> System.out.println("Keluar dari menu user...");
                             default -> System.out.println("Pilihan tidak valid!");
                         }
@@ -66,6 +67,16 @@ public class Perpustakaan {
             }
 
         } while (pilihan != 0);
+    }
+
+    static int inputAngka() {
+        while (true) {
+            try {
+                return Integer.parseInt(input.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.print("input harus berupa angka! coba lagi: ");
+            }
+        }
     }
 
     // ==== MENU LOGIN =====
@@ -96,6 +107,7 @@ public class Perpustakaan {
         System.out.println(" 9.  Lihat Data Peminjaman");
         System.out.println(" 10. Urutkan Data (Sorting)");
         System.out.println(" 11. Cari Buku (searching)");
+        System.out.println(" 12. Riwayat Peminjaman Anggota");
         System.out.println(" 0.  Keluar");
         System.out.println("====================================");
         System.out.print("Pilih menu: ");
@@ -110,8 +122,7 @@ public class Perpustakaan {
         System.out.println(" 2.  Pinjam Buku");
         System.out.println(" 3.  Kembalikan Buku");
         System.out.println(" 4.  Lihat Data Peminjaman");
-        System.out.println(" 5.  Urutkan Data (Sorting)");
-        System.out.println(" 6.  Cari Buku (searching)");
+        System.out.println(" 5.  filter cari buku (searching > sorting)");
         System.out.println(" 0.  Keluar");
         System.out.println("====================================");
         System.out.print("Pilih menu: ");
@@ -122,14 +133,15 @@ public class Perpustakaan {
         System.out.println("\n--- MENU FILTER ---");
         System.out.println(" 1. Urutkan Buku berdasarkan Judul (A-Z)");
         System.out.println(" 2. Urutkan Buku berdasarkan ISBN");
-        System.out.println(" 3. Urutkan Buku berdasarkan Stok (Terbanyak)");
-        System.out.println(" 4. Urutkan Anggota berdasarkan Nama (A-Z)");
-        System.out.println(" 5. Urutkan Anggota berdasarkan ID");
-        System.out.println(" 6. Urutkan Peminjaman berdasarkan Tanggal");
-        System.out.println(" 7. Urutkan Peminjaman berdasarkan Status");
+        System.out.println(" 3. Urutkan Buku berdasarkan Kategori");
+        System.out.println(" 4. Urutkan Buku berdasarkan Pengarang");
+        System.out.println(" 5. Urutkan Anggota berdasarkan Nama (A-Z)");
+        System.out.println(" 6. Urutkan Anggota berdasarkan ID");
+        System.out.println(" 7. Urutkan Peminjaman berdasarkan Tanggal");
+        System.out.println(" 8. Urutkan Peminjaman berdasarkan Status");
         System.out.print("Pilih sorting: ");
 
-        int pilihan = Integer.parseInt(input.nextLine());
+        int pilihan = inputAngka();
         switch (pilihan) {
             case 1 -> {
                 bubbleSortBuku(1);
@@ -140,22 +152,26 @@ public class Perpustakaan {
                 lihatBuku();
             }
             case 3 -> {
-                bubbleSortBukuStok();
+                bubbleSortBuku(2);
                 lihatBuku();
             }
             case 4 -> {
+                bubbleSortBuku(3);
+                lihatBuku();
+            }
+            case 5 -> {
                 bubbleSortAnggota(1);
                 lihatAnggota();
             }
-            case 5 -> {
+            case 6 -> {
                 bubbleSortAnggota(0);
                 lihatAnggota();
             }
-            case 6 -> {
+            case 7 -> {
                 bubbleSortPinjam(3);
                 lihatPeminjaman();
             }
-            case 7 -> {
+            case 8 -> {
                 bubbleSortPinjam(4);
                 lihatPeminjaman();
             }
@@ -171,7 +187,7 @@ public class Perpustakaan {
         System.out.println(" 3. Cari berdasarkan Kategori");
         System.out.println(" 4. Cari berdasarkan Pengarang");
         System.out.print("Pilih opsi: ");
-        int pilihan = Integer.parseInt(input.nextLine());
+        int pilihan = inputAngka();
 
         switch (pilihan) {
             case 1 -> cariBuku();
@@ -186,7 +202,7 @@ public class Perpustakaan {
 
     // =============================================
     // BUBBLE SORT - BUKU berdasarkan kolom
-    // kolom 0 = ISBN, kolom 1 = Judul, kolom 2 = Pengarang
+    // kolom 0 = ISBN, kolom 1 = Judul, kolom 2 = Kategori, kolom 3 = Pengarang
     // =============================================
     static void bubbleSortBuku(int kolom) {
         int n = daftarBuku.size();
@@ -282,16 +298,15 @@ public class Perpustakaan {
             return;
         }
 
-        System.out.printf("%-6s %-25s %-20s %-20s %s%n", "ISBN", "Judul", "Kategori", "Pengarang", "Stok");
+        // format tabel yang rapi untuk menampilkan daftar buku, biar enak diliat
 
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 60; i++) {
-            sb.append("-");
-        }
-        System.out.println(sb.toString());
+        System.out.printf("%-6s %-25s %-20s %-20s %s%n",
+                "ISBN", "Judul", "Kategori", "Pengarang", "Stok");
+        System.out.println("-".repeat(75));
         for (String[] b : daftarBuku) {
             System.out.printf("%-6s %-25s %-20s %-20s %s%n", b[0], b[1], b[2], b[3], b[4]);
         }
+
     }
 
     static void tambahBuku() {
@@ -342,7 +357,16 @@ public class Perpustakaan {
                 System.out.print("Pengarang baru: ");
                 b[3] = input.nextLine();
                 System.out.print("Stok baru     : ");
-                b[4] = input.nextLine();
+                b[4] = input.nextLine();// stok harus angka, jadi validasi dulu
+                try {
+                    Integer.parseInt(b[4]);
+                } catch (NumberFormatException e) {
+                    System.out.println("Stok harus berupa angka!");
+                    return;
+                } catch (Exception e) {
+                    System.out.println("Terjadi kesalahan saat mengedit buku.");
+                    return;
+                }
                 System.out.println("Buku berhasil diedit!");
                 simpanBukuCSV();
                 return;
@@ -383,6 +407,9 @@ public class Perpustakaan {
 
         for (String[] b : daftarBuku) {
             if (b[1].toLowerCase().contains(keyword)) {
+                System.out.printf("%-6s %-25s %-20s %-20s %s%n",
+                        "ISBN", "Judul", "Kategori", "Pengarang", "Stok");
+                System.out.println("-".repeat(75));
                 System.out.printf("%-6s %-25s %-20s %-20s %s%n",
                         b[0], b[1], b[2], b[3], b[4]);
                 ketemu = true;
@@ -456,6 +483,63 @@ public class Perpustakaan {
         }
     }
 
+    // ======== SERACHING BUKU BERDASARKAN FILTER CARI BUKU ==============
+
+    static void filterCariBukuUser() {
+        System.out.println("\n--- FILTER PENCARIAN BUKU ---");
+        System.out.println("1. Berdasarkan Judul");
+        System.out.println("2. Berdasarkan Kategori");
+        System.out.println("3. Berdasarkan Pengarang");
+        System.out.println("4. Berdasarkan Status");
+        System.out.print("Pilih filter: ");
+
+        int pilihan = inputAngka();
+
+        System.out.print("Masukkan keyword: ");
+        String keyword = input.nextLine().toLowerCase();
+
+        boolean ketemu = false;
+
+        System.out.printf("%-6s %-25s %-25s %-20s %-5s %-10s%n",
+                "ISBN", "Judul", "Kategori", "Pengarang", "Stok", "Status");
+        System.out.println("-".repeat(95));
+
+        for (String[] b : daftarBuku) {
+            int stok = Integer.parseInt(b[4]);
+            String statusBuku = stok > 0 ? "tersedia" : "habis";
+
+            boolean cocok = false;
+
+            switch (pilihan) {
+                case 1:
+                    cocok = b[1].toLowerCase().contains(keyword);
+                    break;
+                case 2:
+                    cocok = b[2].toLowerCase().contains(keyword);
+                    break;
+                case 3:
+                    cocok = b[3].toLowerCase().contains(keyword);
+                    break;
+                case 4:
+                    cocok = statusBuku.equals(keyword);
+                    break;
+                default:
+                    System.out.println("Pilihan filter tidak valid!");
+                    return;
+            }
+
+            if (cocok) {
+                System.out.printf("%-6s %-25s %-25s %-20s %-5s %-10s%n",
+                        b[0], b[1], b[2], b[3], b[4], statusBuku);
+                ketemu = true;
+            }
+        }
+
+        if (!ketemu) {
+            System.out.println("Buku tidak ditemukan.");
+        }
+    }
+
     // ===== ANGGOTA =====
     static void lihatAnggota() {
         System.out.println("\n--- DAFTAR ANGGOTA ---");
@@ -464,8 +548,8 @@ public class Perpustakaan {
             return;
         }
         System.out.printf("%-8s %-20s %s%n", "ID", "Nama", "No. Telp");
-        System.out.println("-".repeat(45)); 
-        // harusnya pake 
+        System.out.println("-".repeat(45));
+        // harusnya pake
         // for (int i = 0; i < 45; i++) {
         // siout("-");
         // } tapi biar cepet aja pakai repeat
@@ -610,6 +694,37 @@ public class Perpustakaan {
         }
     }
 
+    static void riwayatAnggota() {
+        System.out.println("\nMasukkan ID anggota: ");
+        String id = input.nextLine();
+
+        boolean ketemu = false;
+        for (String[] p : daftarPinjam) {
+            if (p[1].equalsIgnoreCase(id)) {
+                System.out.printf("%-8s %-8s %-15s %s%n", p[0], p[2], p[3], p[4]);
+                ketemu = true;
+            }
+        }
+
+        if (!ketemu) {
+            System.out.println("Anggota tidak memiliki riwayat peminjaman.");
+        }
+
+        boolean anggotaAda = false;
+        for (String[] a : daftarAnggota) {
+            if (a[0].equals(id)) {
+                anggotaAda = true;
+                System.out.println("Riwayat peminjaman untuk anggota: " + a[1]);
+                break;
+            }
+        }
+        if (!anggotaAda) {
+            System.out.println("Anggota tidak ditemukan!");
+            return;
+        }
+
+    }
+
     // ====== SIMPAN DATA KE CSV ======
     static void simpanBukuCSV() {
         try {
@@ -715,6 +830,31 @@ public class Perpustakaan {
         } catch (FileNotFoundException e) {
             System.out.println("File peminjaman tidak ditemukan.");
         }
+    }
+
+    static void Dashboard() {
+
+        int totalBuku = daftarBuku.size();
+        int totalAnggota = daftarAnggota.size();
+
+        int sedangDipinjam = 0;
+        int bukuTersedia = 0;
+
+        for (String[] p : daftarPinjam) {
+            if (p[4].equals("Dipinjam")) {
+                sedangDipinjam++;
+            }
+        }
+
+        for (String[] b : daftarBuku) {
+            bukuTersedia += Integer.parseInt(b[4]);
+        }
+
+        System.out.println("\n===== DASHBOARD =====");
+        System.out.println("Total judul buku    : " + totalBuku);
+        System.out.println("Total anggota       : " + totalAnggota);
+        System.out.println("Buku yang sedang dipinjam : " + sedangDipinjam);
+        System.out.println("Buku tersedia       : " + bukuTersedia);
     }
 
 }
