@@ -357,9 +357,9 @@ public class Perpustakaan {
                 System.out.print("Pengarang baru: ");
                 b[3] = input.nextLine();
                 System.out.print("Stok baru     : ");
-                b[4] = input.nextLine();// stok harus angka, jadi validasi dulu
                 try {
                     Integer.parseInt(b[4]);
+                    b[4] = input.nextLine();// stok harus angka, jadi validasi dulu
                 } catch (NumberFormatException e) {
                     System.out.println("Stok harus berupa angka!");
                     return;
