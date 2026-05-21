@@ -325,6 +325,12 @@ public class Perpustakaan {
         System.out.print("Stok     : ");
         String stok = input.nextLine();
 
+        if (mengandungKoma(isbn) || mengandungKoma(judul) || mengandungKoma(kategori) || mengandungKoma(pengarang)
+                || mengandungKoma(stok)) {
+            System.out.println("Input tidak boleh mengandung koma (,)");
+            return;
+        }
+
         try {
             Integer.parseInt(stok);
         } catch (NumberFormatException e) {
@@ -357,14 +363,14 @@ public class Perpustakaan {
                 System.out.print("Pengarang baru: ");
                 b[3] = input.nextLine();
                 System.out.print("Stok baru     : ");
+                // rapihin
+                String stokBaru = input.nextLine();
+
                 try {
-                    Integer.parseInt(b[4]);
-                    b[4] = input.nextLine();// stok harus angka, jadi validasi dulu
+                    Integer.parseInt(stokBaru);
+                    b[4] = stokBaru;
                 } catch (NumberFormatException e) {
                     System.out.println("Stok harus berupa angka!");
-                    return;
-                } catch (Exception e) {
-                    System.out.println("Terjadi kesalahan saat mengedit buku.");
                     return;
                 }
                 System.out.println("Buku berhasil diedit!");
@@ -385,15 +391,20 @@ public class Perpustakaan {
                 return;
             }
         }
-        for (String[] b : daftarBuku) {
+        Iterator<String[]> iterator = daftarBuku.iterator();
+
+        while (iterator.hasNext()) {
+            String[] b = iterator.next();
+
             if (b[0].equals(isbn)) {
-                daftarBuku.remove(b);
+                iterator.remove();
                 System.out.println("Buku berhasil dihapus!");
                 simpanBukuCSV();
                 return;
             }
         }
-        System.out.println("ISBN tidak ditemukan!");
+
+        System.out.println("Buku tidak ditemukan!");
 
     }
 
@@ -405,13 +416,16 @@ public class Perpustakaan {
 
         boolean ketemu = false;
 
+        System.out.printf("%-6s %-25s %-20s %-20s %s%n",
+                "ISBN", "Judul", "Kategori", "Pengarang", "Stok");
+        System.out.println("-".repeat(75));
+
         for (String[] b : daftarBuku) {
             if (b[1].toLowerCase().contains(keyword)) {
-                System.out.printf("%-6s %-25s %-20s %-20s %s%n",
-                        "ISBN", "Judul", "Kategori", "Pengarang", "Stok");
-                System.out.println("-".repeat(75));
+
                 System.out.printf("%-6s %-25s %-20s %-20s %s%n",
                         b[0], b[1], b[2], b[3], b[4]);
+
                 ketemu = true;
             }
         }
@@ -564,7 +578,28 @@ public class Perpustakaan {
         String nama = input.nextLine();
         System.out.print("No Telp : ");
         String noTelp = input.nextLine();
-        String id = "A" + String.format("%03d", daftarAnggota.size() + 1);
+        // generate ID otomatis dengan format A001, A002, dst
+        int max = 0;
+        for (String[] a : daftarAnggota) {
+            try {
+                int nomor = Integer.parseInt(a[0].substring(1));
+
+                if (nomor > max) {
+                    max = nomor;
+                }
+
+            } catch (Exception e) {
+
+            }
+        }
+
+        String id = "A" + String.format("%03d", max + 1);
+
+        if (mengandungKoma(nama) || mengandungKoma(noTelp)) {
+            System.out.println("Input tidak boleh mengandung koma (,)");
+            return;
+        }
+
         daftarAnggota.add(new String[] { id, nama, noTelp });
         System.out.println("Anggota berhasil didaftarkan! ID: " + id);
 
@@ -673,6 +708,7 @@ public class Perpustakaan {
                 System.out.println("ID Peminjaman: " + idPinjam);
                 System.out.println("ID Anggota: " + p[1]);
                 System.out.println("ISBN Buku: " + p[2]);
+                simpanBukuCSV(); // Simpan perubahan stok
                 simpanPinjamCSV(); // Simpan perubahan status peminjaman
                 return;
             }
@@ -698,18 +734,6 @@ public class Perpustakaan {
         System.out.println("\nMasukkan ID anggota: ");
         String id = input.nextLine();
 
-        boolean ketemu = false;
-        for (String[] p : daftarPinjam) {
-            if (p[1].equalsIgnoreCase(id)) {
-                System.out.printf("%-8s %-8s %-15s %s%n", p[0], p[2], p[3], p[4]);
-                ketemu = true;
-            }
-        }
-
-        if (!ketemu) {
-            System.out.println("Anggota tidak memiliki riwayat peminjaman.");
-        }
-
         boolean anggotaAda = false;
         for (String[] a : daftarAnggota) {
             if (a[0].equals(id)) {
@@ -723,6 +747,24 @@ public class Perpustakaan {
             return;
         }
 
+        boolean ketemu = false;
+        for (String[] p : daftarPinjam) {
+            if (p[1].equalsIgnoreCase(id)) {
+                System.out.printf("%-8s %-8s %-15s %s%n", p[0], p[2], p[3], p[4]);
+                ketemu = true;
+            }
+        }
+
+        if (!ketemu) {
+            System.out.println("Anggota tidak memiliki riwayat peminjaman.");
+        }
+
+    }
+
+    // ======== VALIDASI INPUT =========
+
+    static boolean mengandungKoma(String teks) {
+        return teks.contains(",");
     }
 
     // ====== SIMPAN DATA KE CSV ======
