@@ -1,8 +1,6 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.io.*;
 import java.time.LocalDate;
@@ -57,8 +55,7 @@ public class PerpustakaanGUI extends JFrame {
     // Label dashboard.
     JLabel lblTotalBuku, lblTotalAnggota, lblDipinjam, lblTersedia;
 
-    // Warna tampilan sederhana agar tidak terlihat seperti aplikasi era warnet
-    // purba.
+    // Warna tampilan sederhana
     Color warnaUtama = new Color(34, 87, 122);
     Color warnaGelap = new Color(26, 32, 44);
     Color warnaBackground = new Color(245, 247, 250);
@@ -66,6 +63,9 @@ public class PerpustakaanGUI extends JFrame {
     Color warnaHijau = new Color(46, 125, 50);
     Color warnaMerah = new Color(198, 40, 40);
     Color warnaKuning = new Color(245, 124, 0);
+    // warna yang cocok untuk panel tapi tetap ada gradasi biar gak flat banget
+    Color warnaPanelGradasi = new Color(245, 247, 250);
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -84,7 +84,7 @@ public class PerpustakaanGUI extends JFrame {
         });
     }
 
-    // Menggunakan look and feel bawaan sistem agar Swing tidak terlalu menyedihkan.
+    // Menggunakan look and feel bawaan sistem
     static void setLookAndFeel() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -105,7 +105,7 @@ public class PerpustakaanGUI extends JFrame {
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         JPanel background = new JPanel(new GridBagLayout());
-        background.setBackground(new Color(245, 247, 250));
+        background.setBackground(new Color(240, 244, 248));
         background.setBorder(new EmptyBorder(28, 28, 28, 28));
 
         JPanel container = new JPanel(new BorderLayout(0, 24));
@@ -127,12 +127,12 @@ public class PerpustakaanGUI extends JFrame {
         gbc.insets = new Insets(0, 0, 20, 0);
 
         JLabel pilih = new JLabel("Pilih", SwingConstants.CENTER);
-        pilih.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        pilih.setFont(new Font("Segoe UI", Font.BOLD, 36));
         pilih.setForeground(new Color(45, 55, 72));
         kartuLogin.add(pilih, gbc);
 
         gbc.gridy = 1;
-        JButton btnAdmin = tombolLogin("Admin", new Color(34, 87, 122));
+        JButton btnAdmin = tombolLogin("Admin", new Color(33, 150, 243));
         kartuLogin.add(btnAdmin, gbc);
 
         gbc.gridy = 2;
@@ -140,16 +140,19 @@ public class PerpustakaanGUI extends JFrame {
         JButton btnUser = tombolLogin("User", new Color(46, 125, 50));
         kartuLogin.add(btnUser, gbc);
 
+        // Action listener untuk tombol login
         btnAdmin.addActionListener(e -> {
             roleTerpilih[0] = "Admin";
             dialog.dispose();
         });
 
+        // Action listener untuk tombol login
         btnUser.addActionListener(e -> {
             roleTerpilih[0] = "User";
             dialog.dispose();
         });
 
+        // Menambahkan komponen ke dialog
         container.add(judul, BorderLayout.NORTH);
         container.add(kartuLogin, BorderLayout.CENTER);
 
@@ -363,6 +366,15 @@ public class PerpustakaanGUI extends JFrame {
         txtPengarang = new JTextField();
         txtStok = new JTextField();
         txtCariBuku = new JTextField();
+        JComboBox<String> cbSortBuku = new JComboBox<>(new String[] {
+                "Sort: Default",
+                "ISBN A-Z",
+                "Judul A-Z",
+                "Kategori A-Z",
+                "Pengarang A-Z",
+                "Stok Terbanyak",
+                "Stok Tersedikit"
+        });
 
         form.add(new JLabel("ISBN"));
         form.add(txtIsbn);
@@ -384,12 +396,17 @@ public class PerpustakaanGUI extends JFrame {
         JButton btnRefresh = tombol("Refresh", warnaUtama);
         JButton btnBersih = tombol("Clear", warnaGelap);
 
+        // action
         btnTambah.addActionListener(e -> tambahBukuGUI());
         btnEdit.addActionListener(e -> editBukuGUI());
         btnHapus.addActionListener(e -> hapusBukuGUI());
         btnCari.addActionListener(e -> cariBukuGUI());
         btnRefresh.addActionListener(e -> refreshBuku());
         btnBersih.addActionListener(e -> bersihkanFieldBuku());
+        cbSortBuku.addActionListener(e -> {
+            cariBukuGUI();
+            sortTabelBuku(cbSortBuku.getSelectedItem().toString());
+        });
 
         tombol.add(btnTambah);
         tombol.add(btnEdit);
@@ -427,6 +444,7 @@ public class PerpustakaanGUI extends JFrame {
 
         JPanel tombolCari = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         tombolCari.setBackground(warnaBackground);
+        tombolCari.add(cbSortBuku);
         tombolCari.add(btnCariAtas);
         tombolCari.add(btnRefreshAtas);
 
@@ -434,7 +452,10 @@ public class PerpustakaanGUI extends JFrame {
         panelCari.add(txtCariBuku, BorderLayout.CENTER);
         panelCari.add(tombolCari, BorderLayout.EAST);
 
-        btnCariAtas.addActionListener(e -> cariBukuGUI());
+        btnCariAtas.addActionListener(e -> {
+            cariBukuGUI();
+            sortTabelBuku(cbSortBuku.getSelectedItem().toString());
+        });
         btnRefreshAtas.addActionListener(e -> refreshBuku());
 
         kanan.add(panelCari, BorderLayout.NORTH);
@@ -552,6 +573,48 @@ public class PerpustakaanGUI extends JFrame {
         }
     }
 
+    void sortTabelBuku(String tipeSort) {
+        List<String[]> data = new ArrayList<>();
+
+        for (int i = 0; i < modelBuku.getRowCount(); i++) {
+            data.add(new String[] {
+                    modelBuku.getValueAt(i, 0).toString(),
+                    modelBuku.getValueAt(i, 1).toString(),
+                    modelBuku.getValueAt(i, 2).toString(),
+                    modelBuku.getValueAt(i, 3).toString(),
+                    modelBuku.getValueAt(i, 4).toString()
+            });
+        }
+
+        switch (tipeSort) {
+            case "ISBN A-Z":
+                data.sort((a, b) -> a[0].compareToIgnoreCase(b[0]));
+                break;
+            case "Judul A-Z":
+                data.sort((a, b) -> a[1].compareToIgnoreCase(b[1]));
+                break;
+            case "Kategori A-Z":
+                data.sort((a, b) -> a[2].compareToIgnoreCase(b[2]));
+                break;
+            case "Pengarang A-Z":
+                data.sort((a, b) -> a[3].compareToIgnoreCase(b[3]));
+                break;
+            case "Stok Terbanyak":
+                data.sort((a, b) -> Integer.parseInt(b[4]) - Integer.parseInt(a[4]));
+                break;
+            case "Stok Tersedikit":
+                data.sort((a, b) -> Integer.parseInt(a[4]) - Integer.parseInt(b[4]));
+                break;
+            default:
+                return;
+        }
+
+        modelBuku.setRowCount(0);
+        for (String[] b : data) {
+            modelBuku.addRow(b);
+        }
+    }
+
     void refreshBuku() {
         txtCariBuku.setText("");
         refreshTabelBuku();
@@ -606,6 +669,12 @@ public class PerpustakaanGUI extends JFrame {
         txtNamaAnggota = new JTextField();
         txtNoTelp = new JTextField();
         txtCariAnggota = new JTextField();
+        JComboBox<String> cbSortAnggota = new JComboBox<>(new String[] {
+                "Sort: Default",
+                "ID A-Z",
+                "Nama A-Z",
+                "No Telp A-Z"
+        });
 
         form.add(new JLabel("ID Otomatis"));
         form.add(txtIdAnggota);
@@ -664,6 +733,7 @@ public class PerpustakaanGUI extends JFrame {
 
         JPanel tombolCari = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         tombolCari.setBackground(warnaBackground);
+        tombolCari.add(cbSortAnggota);
         tombolCari.add(btnCariAtas);
         tombolCari.add(btnRefreshAtas);
 
@@ -671,7 +741,10 @@ public class PerpustakaanGUI extends JFrame {
         panelCari.add(txtCariAnggota, BorderLayout.CENTER);
         panelCari.add(tombolCari, BorderLayout.EAST);
 
-        btnCariAtas.addActionListener(e -> cariAnggotaGUI());
+        btnCariAtas.addActionListener(e -> {
+            cariAnggotaGUI();
+            sortTabelAnggota(cbSortAnggota.getSelectedItem().toString());
+        });
         btnRefreshAtas.addActionListener(e -> refreshAnggota());
 
         kanan.add(panelCari, BorderLayout.NORTH);
@@ -680,6 +753,37 @@ public class PerpustakaanGUI extends JFrame {
         panel.add(kiri, BorderLayout.WEST);
         panel.add(kanan, BorderLayout.CENTER);
         return panel;
+    }
+
+    void sortTabelAnggota(String tipeSort) {
+        List<String[]> data = new ArrayList<>();
+
+        for (int i = 0; i < modelAnggota.getRowCount(); i++) {
+            data.add(new String[] {
+                    modelAnggota.getValueAt(i, 0).toString(),
+                    modelAnggota.getValueAt(i, 1).toString(),
+                    modelAnggota.getValueAt(i, 2).toString()
+            });
+        }
+
+        switch (tipeSort) {
+            case "ID A-Z":
+                data.sort((a, b) -> a[0].compareToIgnoreCase(b[0]));
+                break;
+            case "Nama A-Z":
+                data.sort((a, b) -> a[1].compareToIgnoreCase(b[1]));
+                break;
+            case "No Telp A-Z":
+                data.sort((a, b) -> a[2].compareToIgnoreCase(b[2]));
+                break;
+            default:
+                return;
+        }
+
+        modelAnggota.setRowCount(0);
+        for (String[] a : data) {
+            modelAnggota.addRow(a);
+        }
     }
 
     void tambahAnggotaGUI() {
@@ -868,7 +972,7 @@ public class PerpustakaanGUI extends JFrame {
         JButton btnRefreshAtas = tombol("Refresh", warnaUtama);
         JButton btnKembaliAtas = tombol("Kembalikan", warnaKuning);
 
-        JPanel tombolAtas = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        JPanel tombolAtas = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
         tombolAtas.setBackground(warnaBackground);
         tombolAtas.add(btnCariAtas);
         tombolAtas.add(btnRefreshAtas);
@@ -887,8 +991,6 @@ public class PerpustakaanGUI extends JFrame {
 
         panel.add(kiri, BorderLayout.WEST);
         panel.add(kanan, BorderLayout.CENTER);
-        panel.add(kiri, BorderLayout.WEST);
-        panel.add(new JScrollPane(tabelPinjam), BorderLayout.CENTER);
         return panel;
     }
 
