@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "PerpustakaanGUI2",
+            "request": "launch",
+            "mainClass": "PerpustakaanGUI2",
+            "projectName": "PROJECT_UAS_KEL-6-_1def721f"
+        },
+        {
+            "type": "java",
             "name": "PerpustakaanSwing",
             "request": "launch",
             "mainClass": "PerpustakaanSwing",
