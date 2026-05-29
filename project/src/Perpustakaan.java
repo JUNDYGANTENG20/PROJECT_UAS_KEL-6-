@@ -648,13 +648,11 @@ public class Perpustakaan {
         String idAnggota = input.nextLine();
         System.out.print("ISBN Buku  : ");
         String isbn = input.nextLine();
-
         boolean anggotaAda = daftarAnggota.stream().anyMatch(a -> a[0].equals(idAnggota));
         if (!anggotaAda) {
             System.out.println("Anggota tidak ditemukan!");
             return;
         }
-
         String[] buku = null;
         for (String[] b : daftarBuku) {
             if (b[0].equals(isbn)) {
@@ -676,10 +674,8 @@ public class Perpustakaan {
         daftarPinjam.add(new String[] { idPinjam, idAnggota, isbn, tgl, "Dipinjam" });
         buku[4] = String.valueOf(Integer.parseInt(buku[4]) - 1);
 
-        System.out.println("Peminjaman berhasil! ID Pinjam: " + idPinjam);
-        System.out.println("Tanggal Pinjam: " + tgl);
-        System.out.println("ID Anggota: " + idAnggota);
-        System.out.println("ISBN Buku: " + isbn);
+        System.out.println("Peminjaman berhasil! ID Pinjam: " + idPinjam); System.out.println("Tanggal Pinjam: " + tgl);
+        System.out.println("ID Anggota: " + idAnggota); System.out.println("ISBN Buku: " + isbn);
 
         simpanBukuCSV(); // Simpan perubahan stok
         simpanPinjamCSV(); // Simpan data peminjaman baru
